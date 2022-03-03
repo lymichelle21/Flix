@@ -11,6 +11,7 @@ import AlamofireImage
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var tableView: UITableView!
+
     var movies = [[String:Any]]()
     
     override func viewDidLoad() {
@@ -32,7 +33,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                  self.movies = dataDictionary["results"] as! [[String:Any]]
                  self.tableView.reloadData()
                     // TODO: Get the array of movies
-                 
                     // TODO: Store the movies in a property to use elsewhere
                     // TODO: Reload your table view data
                  print(dataDictionary)
@@ -63,7 +63,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         return cell
     }
     
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        print("Loading up details screen")
+        // Find selected movie
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        let movie = movies[indexPath.row]
+        
+        // Pass selected movie to details view controller
+        let detailsViewController = segue.destination as!MovieDetailsViewController
+        detailsViewController.movie = movie
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
 }
 
